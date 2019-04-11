@@ -11,12 +11,12 @@ MySQL could be access
 
 
 #### Configure Email in settings.py
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '*****@gmail.com'
-EMAIL_HOST_PASSWORD = '**********'
-EMAIL_PORT = 587
-EMAIL_FROM = 'Attract <no-reply@*****@gmail.com>'
+* EMAIL_USE_TLS = True
+* EMAIL_HOST = 'smtp.gmail.com'
+* EMAIL_HOST_USER = '*****@gmail.com'
+* EMAIL_HOST_PASSWORD = '**********'
+* EMAIL_PORT = 587
+* EMAIL_FROM = 'Attract <no-reply@*****@gmail.com>'
  
 
 #### Admin User
@@ -29,3 +29,11 @@ EMAIL_FROM = 'Attract <no-reply@*****@gmail.com>'
 * Click on "ADD IMPORT USER"
 * Select file and click on save
 
+#### Open API
+http://localhost:8000/api
+
+#### Open Frontend
+http://localhost:8000
+* Enter username and password
+* If login success than it will redirect to product list page
+* On click on order button user order will be add 
