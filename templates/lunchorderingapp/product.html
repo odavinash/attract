@@ -1,0 +1,93 @@
+{% load static %}
+
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+<!------ Include the above in your HEAD tag ---------->
+
+<table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Company Name</th>
+                <th>Price</th>
+                <th>Make order</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Product Name</th>
+                <th>Company Name</th>
+                <th>Price</th>
+                <th>Make order</th>
+            </tr>
+        </tfoot>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+<script>
+var page = 1;
+    $(document).ready(function () {
+        token = localStorage.getItem('token');
+        var table = $('#example').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "searching": false,
+            "lengthChange": false,
+            "info": true,
+            "ajax": {
+                "beforeSend": function(xhr){
+                    xhr.setRequestHeader("Authorization",
+                     "Token "+token);
+                },
+               "data": function(){
+                  var info = $('#example').DataTable().page.info();
+                  console.log(info.page)
+                  $('#example').DataTable().ajax.url(
+                      "http://localhost:8000/get-products/"+(info.page + 1)
+                  );
+               }
+            },
+
+            "columns": [
+                { "data": "product_name" },
+                { "data": "company_name" },
+                { "data": "price" },
+                { "data": null, "targets": -1, "defaultContent": "<button>Order</button>"},
+            ]
+        } );
+
+        $('#example tbody').on( 'click', 'button', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            console.log( data.product_id );
+            url = "http://localhost:8000/add-order"
+            data = {"product_id": data.product_id};
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: data,
+                cache: false,
+                "beforeSend": function(xhr){
+                    xhr.setRequestHeader("Authorization",
+                     "Token "+token);
+                },
+                success: function(data, status, xhr){
+                    alert(data.message)
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    data = jQuery.parseJSON(jqXHR.responseText);
+                   alert(data.message);
+                }
+            });
+        } );
+
+    });
+
+</script>
