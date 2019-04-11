@@ -29,3 +29,11 @@ MySQL could be access
 * Click on "ADD IMPORT USER"
 * Select file and click on save
 
+#### Open API
+http://localhost:8000/api
+
+#### Open Frontend
+http://localhost:8000
+* Enter username and password
+* If login success than it will redirect to product list page
+* On click on order button user order will be add 
